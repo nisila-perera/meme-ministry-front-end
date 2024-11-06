@@ -1,51 +1,67 @@
-<div class="w-full max-w-2xl mr-0 space-y-4 pl-4 pr-0 sm:pl-6 sm:pr-0 lg:pl-8 lg:pr-0">
-    <div class="bg-gray-800 rounded-xl shadow-xl overflow-hidden">
-        <div class="p-4 flex items-center space-x-3 border-b border-gray-700">
-            <img class="rounded-full w-10 h-10" src="assets/img/profile.jpg" alt="Profile Picture">
-            <div class="flex-1">
-                <p class="font-bold text-sm">big.enjineer</p>
-                <p class="text-xs text-gray-400">Professional Memer</p>
+<div class="max-w-2xl mx-auto bg-gray-900 rounded-2xl overflow-hidden shadow-xl border border-gray-800 my-5">
+    <div class="flex justify-between items-center p-4 border-b border-gray-800">
+        <div class="flex items-center space-x-3">
+            <div class="relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#2ED9C6] to-[#B85CB2] rounded-full blur opacity-75"></div>
+                <img src="assets/img/profile.jpg" alt="Profile Picture" 
+                     class="relative w-10 h-10 rounded-full object-cover border-2 border-transparent bg-gray-900"/>
             </div>
-            <button class="text-gray-400 hover:text-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                </svg>
-            </button>
-        </div>
-
-        <div class="p-4 space-y-4">
-            <div class="textarea-wrapper">
-                <textarea 
-                    class="meme-input w-full bg-gray-700 rounded-lg p-3 text-gray-100 placeholder-gray-400 text-sm resize-none"
-                    rows="3"
-                    placeholder="What's the meme situation? 😎"></textarea>
-                <div class="glow-effect"></div>
-                <div class="border-effect"></div>
-            </div>
-            
-            <div id="imagePreview" class="hidden">
-                <div class="relative rounded-lg overflow-hidden">
-                    <img id="preview" class="w-full max-h-96 object-cover" src="" alt="Meme preview">
-                    <button class="absolute top-2 right-2 bg-gray-900 bg-opacity-50 rounded-full p-1.5 hover:bg-opacity-75">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
+            <div class="flex flex-col">
+                <div class="flex items-center space-x-1">
+                    <span class="font-semibold text-white">big.enjineer</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                         class="w-4 h-4 text-[#2ED9C6]">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
                 </div>
+                <span class="text-sm text-gray-400">Professional Memer</span>
             </div>
         </div>
+        <button class="p-1 rounded-full hover:bg-gray-800 transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                 class="w-5 h-5 text-gray-400 hover:text-white">
+                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/>
+            </svg>
+        </button>
+    </div>
 
-        <!-- Footer -->
-        <div class="px-4 py-3 border-t border-gray-700 flex items-center justify-between">
-            <label class="cursor-pointer">
-                <input type="file" class="hidden" accept="image/*">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500 hover:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    <div class="p-4">
+        <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-[#2ED9C6] to-[#B85CB2] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
+            
+            <textarea 
+                placeholder="What's on your mind?" 
+                class="w-full min-h-[120px] bg-gray-800/80 rounded-lg p-4 text-white placeholder-gray-400 relative z-10 border border-transparent focus:border-gray-600 focus:ring-0 focus:outline-none resize-none transition duration-300"
+            ></textarea>
+        </div>
+    </div>
+
+    <div id="imagePreview" class="hidden p-4 bg-gray-800/50">
+        <div class="relative rounded-lg overflow-hidden group">
+            <img id="preview" class="w-full max-h-96 object-cover" alt="Preview"/>
+            <button class="absolute top-2 right-2 p-1.5 bg-gray-900/80 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-gray-900">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
+                     class="w-5 h-5 text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
-            </label>
-            <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-full font-medium text-sm transition-colors duration-200">
-                Post Meme 🔥
             </button>
         </div>
+    </div>
+
+    <div class="p-4 border-t border-gray-800 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <button class="p-2 rounded-lg hover:bg-gray-800 text-[#2ED9C6] transition-colors duration-200 group relative">
+                <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"/>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
+                     class="w-6 h-6 stroke-current transform group-hover:scale-110 transition-transform duration-200">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                </svg>
+            </button>
+        </div>
+
+        <button class="px-6 py-2 bg-gradient-to-r from-[#2ED9C6] to-[#B85CB2] rounded-lg text-white font-semibold hover:opacity-90 transition-opacity duration-200 flex items-center space-x-2 group">
+            <span>Post Meme</span>
+            <span class="text-xl group-hover:rotate-12 transition-transform duration-200">🔥</span>
+        </button>
     </div>
 </div>
