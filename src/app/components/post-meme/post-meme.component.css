@@ -1,0 +1,96 @@
+textarea {
+    min-height: 80px;
+}
+
+#imagePreview {
+    transition: all 0.3s ease;
+}
+
+#imagePreview.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.textarea-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.meme-input {
+    position: relative;
+    z-index: 2;
+    min-height: 80px;
+    background: rgba(31, 31, 31, 0.8);
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.meme-input:focus {
+    outline: none;
+    background: rgba(31, 31, 31, 0.9);
+}
+
+.glow-effect {
+    position: absolute;
+    inset: -2px;
+    border-radius: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.border-effect {
+    position: absolute;
+    inset: -1px;
+    border-radius: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.textarea-wrapper:focus-within .glow-effect {
+    opacity: 1;
+    background: radial-gradient(
+        circle at top left,
+        rgba(64, 47, 181, 0.4),
+        transparent 50%
+    ),
+    radial-gradient(
+        circle at bottom right,
+        rgba(207, 48, 170, 0.4),
+        transparent 50%
+    );
+    filter: blur(10px);
+}
+
+.textarea-wrapper:focus-within .border-effect {
+    opacity: 1;
+    background: linear-gradient(
+        45deg,
+        rgba(64, 47, 181, 0.5),
+        rgba(207, 48, 170, 0.5)
+    );
+    filter: blur(1px);
+}
+
+.textarea-wrapper:focus-within .meme-input {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes glowPulse {
+    0% {
+        filter: blur(10px);
+    }
+    50% {
+        filter: blur(15px);
+    }
+    100% {
+        filter: blur(10px);
+    }
+}
+
+.textarea-wrapper:focus-within .glow-effect {
+    animation: glowPulse 2s ease-in-out infinite;
+}
