@@ -1,86 +1,78 @@
-<!-- Main Container -->
 <div class="fixed right-0 mr-10 mt-5 w-64 h-screen overflow-auto">
-    <!-- Card Container -->
-    <div class="w-full max-w-lg mx-auto bg-gray-800 rounded-lg shadow-xl">
-      
-      <!-- Loading State -->
-      <div *ngIf="isLoading" class="flex justify-center items-center p-4">
-        <div class="animate-pulse text-white">
-          <p class="text-center">Loading profile...</p>
+  <div class="w-full max-w-lg mx-auto bg-gray-800 rounded-lg shadow-xl">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center p-4">
+      <div class="animate-pulse text-white">
+        Loading profile...
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="p-4">
+      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
+        {{ error }}
+      </div>
+    </div>
+
+    <!-- Cover Photo -->
+    <div class="relative w-full h-32 rounded-t-lg overflow-hidden">
+      <img 
+        [src]="coverImageUrl || defaultCoverImage" 
+        class="w-full h-full object-cover"
+        alt="Cover photo"
+        (error)="onImageError($event)"
+      />
+    </div>
+
+    <!-- Profile Picture -->
+    <div class="relative -mt-16 text-center px-4">
+      <img 
+        [src]="profileImageUrl || defaultProfileImage" 
+        class="inline-block w-32 h-32 border-4 border-white rounded-full object-cover"
+        alt="Profile picture"
+        (error)="onImageError($event)"
+      />
+    </div>
+
+    <!-- Rest of the template remains the same -->
+    <div class="text-center p-4 space-y-2">
+      <h2 class="text-xl font-semibold text-white">
+        {{ currentUser?.username || 'Username Loading...' }}
+      </h2>
+      <p class="text-gray-300">
+        {{ currentUser?.bio || 'Bio Loading...' }}
+      </p>
+    </div>
+
+    <hr class="border-gray-700">
+
+    <div class="grid grid-cols-3 gap-4 px-10 py-5 text-white">
+      <div class="text-center">
+        <div class="font-bold text-lg">
+          {{ currentUser?.followerCount ?? 0 }}
+        </div>
+        <div class="text-gray-300 text-sm">
+          Followers
         </div>
       </div>
-  
-      <!-- Error State -->
-      <div *ngIf="error" class="p-4">
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
-          <p class="font-medium">{{ error }}</p>
+
+      <div class="text-center">
+        <div class="font-bold text-lg">
+          {{ currentUser?.followingCount ?? 0 }}
+        </div>
+        <div class="text-gray-300 text-sm">
+          Following
         </div>
       </div>
-  
-      <!-- Content Container -->
-      <ng-container *ngIf="!isLoading && !error">
-        <!-- Cover Image -->
-        <div 
-          class="rounded-t-lg h-[100px] bg-cover bg-center"
-          [style.backgroundImage]="'url(' + (currentUser?.profilePicture || 'assets/img/cover.webp') + ')'">
+
+      <div class="text-center">
+        <div class="font-bold text-lg">
+          {{ currentUser?.postCount ?? 0 }}
         </div>
-  
-        <!-- Profile Picture Section -->
-        <div class="relative -mt-10 text-center">
-          <div class="inline-block border-4 border-white rounded-full">
-            <img 
-              [src]="currentUser?.profilePicture || 'assets/img/profile.jpg'" 
-              alt="profile"
-              class="rounded-full w-20 h-20 object-cover"
-              onerror="this.src='assets/img/profile.jpg'"
-            >
-          </div>
+        <div class="text-gray-300 text-sm">
+          Memes
         </div>
-  
-        <!-- User Info Section -->
-        <div class="text-center p-4 space-y-2">
-          <h2 class="text-xl font-semibold text-white">
-            {{ currentUser?.username || 'Loading...' }}
-          </h2>
-          <p class="text-gray-300 text-sm">
-            {{ currentUser?.bio || 'Professional Memer' }}
-          </p>
-        </div>
-  
-        <hr class="border-gray-700 my-2">
-  
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-3 gap-4 px-10 py-5 text-white">
-          <!-- Followers -->
-          <div class="text-center">
-            <div class="font-bold text-lg">
-              {{ currentUser?.followerCount || 0 }}
-            </div>
-            <div class="text-gray-300 text-sm">
-              Followers
-            </div>
-          </div>
-  
-          <!-- Following -->
-          <div class="text-center">
-            <div class="font-bold text-lg">
-              {{ currentUser?.followingCount || 0 }}
-            </div>
-            <div class="text-gray-300 text-sm">
-              Following
-            </div>
-          </div>
-  
-          <!-- Memes -->
-          <div class="text-center">
-            <div class="font-bold text-lg">
-              {{ currentUser?.postCount || 0 }}
-            </div>
-            <div class="text-gray-300 text-sm">
-              Memes
-            </div>
-          </div>
-        </div>
-      </ng-container>
+      </div>
     </div>
   </div>
+</div>

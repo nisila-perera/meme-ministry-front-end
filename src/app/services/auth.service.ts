@@ -10,41 +10,43 @@ import { Router } from '@angular/router';
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
-  private readonly API_URL = `http://localhost:8080/api/auth`;
+  private readonly API_URL = `http://localhost:8080/api`;
 
-  constructor(private http: HttpClient, private router:Router) {
-    const savedUser = localStorage.getItem('currentUser');
+  constructor(private http: HttpClient, private router: Router) {
+    const savedUser = this.getCurrentUser();
     if (savedUser) {
-      const parsedUser: AuthResponse = JSON.parse(savedUser);
-      this.currentUserSubject.next(parsedUser.user);
+      this.currentUserSubject.next(savedUser);
     }
   }
 
   login(username: string, password: string): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(
-        `${this.API_URL}/login`,
+        `${this.API_URL}/auth/login`,
         { username, password }
       )
       .pipe(
         tap((response) => {
-          localStorage.setItem('token', response.accessToken);
-          localStorage.setItem('currentUser', JSON.stringify(response));
-          this.currentUserSubject.next(response.user);
+          if (response && response.user) {
+            localStorage.setItem('token', response.accessToken);
+            localStorage.setItem('currentUser', JSON.stringify(response.user));
+            this.currentUserSubject.next(response.user);
+          }
         })
       );
   }
 
-  register(user: User): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/register`, user,
-      {
-      responseType: 'json',
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    }).pipe(
+  register(formData: FormData): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(
+      `${this.API_URL}/auth/register`,
+      formData
+    ).pipe(
       tap((response) => {
-        console.log(response);
+        if (response && response.user) {
+          localStorage.setItem('token', response.accessToken);
+          localStorage.setItem('currentUser', JSON.stringify(response.user));
+          this.currentUserSubject.next(response.user);
+        }
       })
     );
   }
@@ -57,7 +59,9 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+    const user = this.getCurrentUser();
+    return !!(token && user);
   }
 
   getToken(): string | null {
@@ -65,11 +69,19 @@ export class AuthService {
   }
 
   getCurrentUser(): User | null {
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-      const parsedUser: AuthResponse = JSON.parse(savedUser);
-      return parsedUser.user;
+    try {
+      const savedUser = localStorage.getItem('currentUser');
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser);
+        // Ensure the parsed data has required User properties
+        if (parsedUser && parsedUser.username) {
+          return parsedUser;
+        }
+      }
+      return null;
+    } catch (error) {
+      console.error('Error parsing user data from localStorage:', error);
+      return null;
     }
-    return null;
   }
 }
