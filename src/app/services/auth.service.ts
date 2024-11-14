@@ -28,7 +28,7 @@ export class AuthService {
       .pipe(
         tap((response) => {
           if (response && response.user) {
-            localStorage.setItem('token', response.accessToken);
+            localStorage.setItem('token', response.token);
             localStorage.setItem('currentUser', JSON.stringify(response.user));
             this.currentUserSubject.next(response.user);
           }
@@ -43,7 +43,7 @@ export class AuthService {
     ).pipe(
       tap((response) => {
         if (response && response.user) {
-          localStorage.setItem('token', response.accessToken);
+          localStorage.setItem('token', response.token);
           localStorage.setItem('currentUser', JSON.stringify(response.user));
           this.currentUserSubject.next(response.user);
         }
@@ -73,7 +73,6 @@ export class AuthService {
       const savedUser = localStorage.getItem('currentUser');
       if (savedUser) {
         const parsedUser = JSON.parse(savedUser);
-        // Ensure the parsed data has required User properties
         if (parsedUser && parsedUser.username) {
           return parsedUser;
         }

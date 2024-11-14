@@ -8,6 +8,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { TrendingComponent } from './components/trending/trending.component';
 import { SavedMemesComponent } from './components/saved-memes/saved-memes.component';
 import { RegisterComponent } from './components/register/register.component';
+import { MemersComponent } from './components/memers/memers.component';
 
 export const routes: Routes = [
     {
@@ -38,6 +39,10 @@ export const routes: Routes = [
             {
                 path: 'saved',
                 component: SavedMemesComponent
+            },
+            {
+                path: 'memers',
+                component: MemersComponent
             }
         ]
     },

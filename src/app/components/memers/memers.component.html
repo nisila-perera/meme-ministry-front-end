@@ -1,0 +1,7 @@
+<div *ngIf="isLoading">Loading users...</div>
+<div *ngIf="error">{{ error }}</div>
+<div *ngIf="!isLoading && users.length === 0">No users found.</div>
+
+<div *ngFor="let user of users">
+  <app-single-memer [currentUser]="user"></app-single-memer>
+</div>

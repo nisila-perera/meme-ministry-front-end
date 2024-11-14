@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -12,20 +13,32 @@ export class UserService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getUserData(): Observable<any> {
+  getAllUsers(): Observable<User[]> {
     const token = this.authService.getToken();
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const currentUser = this.authService.getCurrentUser()
 
-    return this.http.get<any>(`${this.API_URL}/${currentUser?.id}`, { headers }).pipe(
-      tap(res =>{
-        console.log(res);
-        
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    const headers = new HttpHeaders()
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json');
+
+    return this.http.get<User[]>(this.API_URL, { headers }).pipe(
+      tap(users => console.log('Fetched users:', users)),
+      catchError(error => {
+        console.error('Error fetching users:', error);
+        return throwError(error);
       })
-      // catchError(error => {
-      //   console.error('Failed to load user data:', error);
-      //   return throwError(() => new Error('Failed to load user data.'));
-      // })
     );
   }
+
+  getUserData(id: number) {}
+
+  updateProfile(id: number, user: User) {}
+
+  updatePassword(id: number, currentPassword: string, newPassword: string) {}
+
+  deleteAccount(id: number) {}
+
 }

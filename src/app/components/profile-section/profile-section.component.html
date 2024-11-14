@@ -16,29 +16,22 @@
 
     <!-- Cover Photo -->
     <div class="relative w-full h-32 rounded-t-lg overflow-hidden">
-      <img 
-        [src]="coverImageUrl || defaultCoverImage" 
-        class="w-full h-full object-cover"
-        alt="Cover photo"
-        (error)="onImageError($event)"
-      />
+      <img [src]="coverImageUrl || defaultCoverImage" class="w-full h-full object-cover" alt="Cover photo"
+        (error)="onImageError($event)" />
     </div>
 
     <!-- Profile Picture -->
     <div class="relative -mt-16 text-center px-4">
-      <img 
-        [src]="profileImageUrl || defaultProfileImage" 
-        class="inline-block w-32 h-32 border-4 border-white rounded-full object-cover"
-        alt="Profile picture"
-        (error)="onImageError($event)"
-      />
+      <img [src]="profileImageUrl || defaultProfileImage"
+        class="inline-block w-32 h-32 border-4 border-white rounded-full object-cover" alt="Profile picture"
+        (error)="onImageError($event)" />
     </div>
 
     <!-- Rest of the template remains the same -->
     <div class="text-center p-4 space-y-2">
-      <h2 class="text-xl font-semibold text-white">
+      <p class="text-xl font-semibold text-white">
         {{ currentUser?.username || 'Username Loading...' }}
-      </h2>
+      </p>
       <p class="text-gray-300">
         {{ currentUser?.bio || 'Bio Loading...' }}
       </p>
@@ -49,7 +42,7 @@
     <div class="grid grid-cols-3 gap-4 px-10 py-5 text-white">
       <div class="text-center">
         <div class="font-bold text-lg">
-          {{ currentUser?.followerCount ?? 0 }}
+          {{ currentUser?.followerCount }}
         </div>
         <div class="text-gray-300 text-sm">
           Followers
@@ -58,7 +51,7 @@
 
       <div class="text-center">
         <div class="font-bold text-lg">
-          {{ currentUser?.followingCount ?? 0 }}
+          {{ currentUser?.followingCount }}
         </div>
         <div class="text-gray-300 text-sm">
           Following
@@ -67,7 +60,7 @@
 
       <div class="text-center">
         <div class="font-bold text-lg">
-          {{ currentUser?.postCount ?? 0 }}
+          {{ currentUser?.postCount }}
         </div>
         <div class="text-gray-300 text-sm">
           Memes
