@@ -1,13 +1,15 @@
 <div class="max-w-2xl mx-auto bg-gray-900 rounded-2xl overflow-hidden shadow-xl border border-gray-800 my-5">
     <!-- Cover Image -->
     <div class="relative h-32">
-        <img *ngIf="currentUser ?.coverPictureData"
-            [src]="'data:' + currentUser ?.coverPictureType + ';base64,' + currentUser ?.coverPictureData"
-            alt="Cover Picture" class="w-full h-full object-cover">
+        <img *ngIf="currentUser?.coverPictureData"
+            [src]="getCoverImageUrl()"
+            alt="Cover Picture" 
+            class="w-full h-full object-cover">
         <div class="absolute left-4 top-20 w-24 h-24 rounded-full overflow-hidden border-4 border-gray-900 bg-gray-800">
-            <img *ngIf="currentUser ?.profilePictureData"
-                [src]="'data:' + currentUser ?.profilePictureType + ';base64,' + currentUser ?.profilePictureData"
-                class="w-full h-full object-cover" alt="Profile Picture">
+            <img *ngIf="currentUser?.profilePictureData"
+                [src]="getProfileImageUrl()"
+                class="w-full h-full object-cover" 
+                alt="Profile Picture">
         </div>
     </div>
 
@@ -18,17 +20,30 @@
                 <h2 class="text-xl font-semibold text-white">{{ displayName }}</h2>
                 <p class="text-sm text-gray-400">{{ userBio }}</p>
             </div>
-            <button (click)="onFollowToggle()"
-                class="px-4 py-2 bg-gradient-to-r from-[#2ED9C6] to-[#B85CB2] text-white rounded-lg hover:opacity-90 transition-opacity duration-200">
+            <!-- Only show follow button if not viewing own profile -->
+            <button *ngIf="!isCurrentUserProfile" 
+                    (click)="onFollowToggle()"
+                    [class.bg-red-500]="isFollowing"
+                    [class.bg-blue-500]="!isFollowing"
+                    class="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity duration-200">
                 {{ isFollowing ? 'Unfollow' : 'Follow' }}
             </button>
         </div>
 
-        <!-- Follower Stats -->
-        <div class="mt-2 flex space-x-4 text-gray-400">
-            <span>{{ currentUser ?.followerCount }} Followers</span>
-            <span>{{ currentUser ?.followingCount }} Following</span>
-            <span>{{ currentUser ?.postCount }} Memes</span>
+        <!-- Follower Stats with clickable links -->
+        <div class="mt-4 flex space-x-6 text-gray-400">
+            <div class="cursor-pointer hover:text-white transition-colors duration-200">
+                <span class="font-semibold">{{ currentUser?.followerCount || 0 }}</span>
+                <span class="ml-1">Followers</span>
+            </div>
+            <div class="cursor-pointer hover:text-white transition-colors duration-200">
+                <span class="font-semibold">{{ currentUser?.followingCount || 0 }}</span>
+                <span class="ml-1">Following</span>
+            </div>
+            <div>
+                <span class="font-semibold">{{ currentUser?.postCount || 0 }}</span>
+                <span class="ml-1">Memes</span>
+            </div>
         </div>
     </div>
 </div>

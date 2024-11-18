@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginComponent implements OnInit{
   currentMeme: string = '';
+  isLoading: boolean = false;
   constructor(
     private authService: AuthService,
     private router: Router
@@ -36,13 +37,16 @@ export class LoginComponent implements OnInit{
 
   // Add login method
   onLogin(): void {
+    this.isLoading = true;
     this.authService.login(this.loginObj.username, this.loginObj.password)
       .subscribe({
         next: (response) => {
           this.router.navigate(['']);
+          this.isLoading = false;
         },
         error: (error) => {
           console.error('Login failed:', error);
+          this.isLoading = false;
         }
       });
   }

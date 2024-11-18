@@ -42,9 +42,9 @@ export class UserService {
     });
 
     return this.http.put<any>(
-      `${this.API_URL}/${userId}`, 
+      `${this.API_URL}/${userId}`,
       formData,
-      { 
+      {
         headers,
         reportProgress: true
       }
@@ -59,7 +59,7 @@ export class UserService {
         return throwError(() => error);
       })
     );
-}
+  }
 
 
 
@@ -67,4 +67,55 @@ export class UserService {
 
   deleteAccount(id: number) { }
 
+  followUser(userId: number): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<any>(
+      `${this.API_URL}/${userId}/follow`,
+      {},
+      { headers }
+    ).pipe(
+      catchError(error => {
+        console.error('Follow error:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  unfollowUser(userId: number): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<any>(
+      `${this.API_URL}/${userId}/unfollow`,
+      {},
+      { headers }
+    ).pipe(
+      catchError(error => {
+        console.error('Unfollow error:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  getFollowers(userId: number): Observable<User[]> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<User[]>(
+      `${this.API_URL}/${userId}/followers`,
+      { headers }
+    );
+  }
+
+  getFollowing(userId: number): Observable<User[]> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<User[]>(
+      `${this.API_URL}/${userId}/following`,
+      { headers }
+    );
+  }
 }

@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/user';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-single-memer',
@@ -24,7 +26,7 @@ export class SingleMemerComponent implements OnInit {
   isCurrentUserProfile = false;
   isFollowing = false;
 
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(private sanitizer: DomSanitizer, private userService: UserService, private authService: AuthService) { }
 
   ngOnInit(): void {
     if (this.currentUser) {
@@ -64,23 +66,44 @@ export class SingleMemerComponent implements OnInit {
     // Return default image if no image data
     return defaultImage;
   }
+  checkFollowStatus(): void {
+    if (!this.currentUser) return;
 
-  private checkFollowStatus(): void {
-    // Implement follow status check logic
-    // This might involve checking if the current authenticated user follows this user
-    this.isFollowing = false;
+    this.userService.getFollowers(this.currentUser.id).subscribe({
+      next: (followers) => {
+        // Check if current logged-in user is in followers list
+        const currentLoggedInUserId = this.authService.getCurrentUser()?.id;
+        this.isFollowing = followers.some(follower => follower.id === currentLoggedInUserId);
+      },
+      error: (error) => console.error('Error checking follow status:', error)
+    });
   }
 
   // Method to handle follow/unfollow action
   onFollowToggle(): void {
     if (!this.currentUser) return;
 
-    // Toggle follow status
-    this.isFollowing = !this.isFollowing;
+    const userId = this.currentUser.id;
 
-    // TODO: Implement actual follow/unfollow logic
-    console.log(`${this.isFollowing ? 'Following' : 'Unfollowed'} user: ${this.currentUser.username}`);
+    if (this.isFollowing) {
+      this.userService.unfollowUser(userId).subscribe({
+        next: () => {
+          this.isFollowing = false;
+          this.currentUser!.followerCount--;
+        },
+        error: (error) => console.error('Error unfollowing user:', error)
+      });
+    } else {
+      this.userService.followUser(userId).subscribe({
+        next: () => {
+          this.isFollowing = true;
+          this.currentUser!.followerCount++;
+        },
+        error: (error) => console.error('Error following user:', error)
+      });
+    }
   }
+
 
   // Method to view user profile
   viewProfile(): void {
