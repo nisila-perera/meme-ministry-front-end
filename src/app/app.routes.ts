@@ -9,6 +9,7 @@ import { TrendingComponent } from './components/trending/trending.component';
 import { SavedMemesComponent } from './components/saved-memes/saved-memes.component';
 import { RegisterComponent } from './components/register/register.component';
 import { MemersComponent } from './components/memers/memers.component';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 
 export const routes: Routes = [
     {
@@ -43,6 +44,10 @@ export const routes: Routes = [
             {
                 path: 'memers',
                 component: MemersComponent
+            },
+            {
+                path: 'change-password',
+                component: PasswordResetComponent
             }
         ]
     },

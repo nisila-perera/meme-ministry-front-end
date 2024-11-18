@@ -11,7 +11,7 @@ import { User } from '../models/user';
 export class UserService {
   private readonly API_URL = 'http://localhost:8080/api/users';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getAllUsers(): Observable<User[]> {
     const token = this.authService.getToken();
@@ -33,12 +33,38 @@ export class UserService {
     );
   }
 
-  getUserData(id: number) {}
+  getUserData(id: number) { }
 
-  updateProfile(id: number, user: User) {}
+  updateUserProfile(userId: number, formData: FormData): Observable<any> {
+    const token = localStorage.getItem('jwtToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
 
-  updatePassword(id: number, currentPassword: string, newPassword: string) {}
+    return this.http.put<any>(
+      `${this.API_URL}/${userId}`, 
+      formData,
+      { 
+        headers,
+        reportProgress: true
+      }
+    ).pipe(
+      tap(response => {
+        if (response && response.id) {
+          localStorage.setItem('currentUser', JSON.stringify(response));
+        }
+      }),
+      catchError(error => {
+        console.error('Update error:', error);
+        return throwError(() => error);
+      })
+    );
+}
 
-  deleteAccount(id: number) {}
+
+
+  updatePassword(id: number, currentPassword: string, newPassword: string) { }
+
+  deleteAccount(id: number) { }
 
 }

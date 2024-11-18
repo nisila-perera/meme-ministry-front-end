@@ -1,94 +1,148 @@
-<!-- components/settings/settings.component.html -->
-<div class="min-h-screen bg-gray-900 p-6 mb-5">
-    <div class="max-w-3xl mx-auto bg-gray-800 rounded-lg shadow-lg p-8">
-        <h2 class="text-3xl font-bold text-white mb-8">Settings</h2>
-
-        <!-- Profile Section -->
-        <div class="mb-10">
-            <h3 class="text-xl font-semibold text-white mb-6">Profile</h3>
-            
-            <!-- Profile Picture -->
-            <div class="mb-6">
-                <div class="flex items-center space-x-4">
-                    <img *ngIf="currentUser?.profilePictureData" 
-                         [src]="'data:' + currentUser?.profilePictureType + ';base64,' + currentUser?.profilePictureData" 
-                         class="w-24 h-24 rounded-full object-cover"
-                         alt="Profile Picture">
-                    <div>
-                        <label class="block text-gray-300 text-sm font-medium mb-2">Profile Picture</label>
-                        <input type="file" 
-                               accept="image/*" 
-                               class="block w-full text-sm text-gray-400
-                                      file:mr-4 file:py-2 file:px-4
-                                      file:rounded-full file:border-0
-                                      file:text-sm file:font-semibold
-                                      file:bg-violet-50 file:text-violet-700
-                                      hover:file:bg-violet-100">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Cover Picture -->
-            <div class="mb-6">
-                <img *ngIf="currentUser?.coverPictureData" 
-                     [src]="'data:' + currentUser?.coverPictureType + ';base64,' + currentUser?.coverPictureData" 
-                     class="w-full h-48 object-cover rounded-lg mb-2"
-                     alt="Cover Picture">
-                <label class="block text-gray-300 text-sm font-medium mb-2">Cover Picture</label>
-                <input type="file" 
-                       accept="image/*" 
-                       class="block w-full text-sm text-gray-400
-                              file:mr-4 file:py-2 file:px-4
-                              file:rounded-full file:border-0
-                              file:text-sm file:font-semibold
-                              file:bg-violet-50 file:text-violet-700
-                              hover:file:bg-violet-100">
-            </div>
-
-            <!-- Username -->
-            <div class="mb-6">
-                <label class="block text-gray-300 text-sm font-medium mb-2">Username</label>
-                <input type="text" 
-                       [(ngModel)]="formData.username" 
-                       class="w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-violet-500">
-            </div>
-
-            <!-- Email -->
-            <div class="mb-6">
-                <label class="block text-gray-300 text-sm font-medium mb-2">Email</label>
-                <input type="email" 
-                       [(ngModel)]="formData.email" 
-                       class="w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-violet-500">
-            </div>
-
-            <!-- Bio -->
-            <div class="mb-6">
-                <label class="block text-gray-300 text-sm font-medium mb-2">Bio</label>
-                <textarea [(ngModel)]="formData.bio" 
-                          rows="4"
-                          class="w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-violet-500"></textarea>
-            </div>
-
-            <!-- Stats (Read-only) -->
-            <div class="grid grid-cols-3 gap-4 mb-6">
-                <div class="bg-gray-700 p-4 rounded-lg">
-                    <p class="text-gray-400 text-sm">Posts</p>
-                    <p class="text-white text-xl font-bold">{{formData.postCount}}</p>
-                </div>
-                <div class="bg-gray-700 p-4 rounded-lg">
-                    <p class="text-gray-400 text-sm">Followers</p>
-                    <p class="text-white text-xl font-bold">{{formData.followerCount}}</p>
-                </div>
-                <div class="bg-gray-700 p-4 rounded-lg">
-                    <p class="text-gray-400 text-sm">Following</p>
-                    <p class="text-white text-xl font-bold">{{formData.followingCount}}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Save Button -->
-        <button class="w-full bg-violet-600 text-white py-3 rounded-lg font-semibold hover:bg-violet-700 transition duration-300">
-            Save Changes
-        </button>
+<!-- settings.component.html -->
+<div class="max-w-4xl mx-auto p-6 space-y-8">
+    <!-- Header -->
+    <div class="border-b border-gray-700 pb-6">
+      <h1 class="text-3xl font-bold text-white">Account Settings</h1>
+      <p class="text-gray-400 mt-2">Manage your profile and account preferences</p>
     </div>
-</div>
+  
+    <!-- Profile Section -->
+    <div class="space-y-8">
+      <!-- Cover Picture -->
+      <div class="relative">
+        <div class="aspect-[3/1] rounded-xl overflow-hidden bg-gray-800">
+          <img
+            *ngIf="currentUser?.coverPictureData"
+            [src]="'data:' + currentUser?.coverPictureType + ';base64,' + currentUser?.coverPictureData"
+            class="w-full h-full object-cover"
+            alt="Cover Picture"
+          />
+          <div *ngIf="!currentUser?.coverPictureData" 
+               class="w-full h-full flex items-center justify-center text-gray-500">
+            No cover photo
+          </div>
+        </div>
+        <div class="absolute bottom-4 right-4">
+          <label class="px-4 py-2 bg-gray-900 bg-opacity-75 rounded-lg cursor-pointer hover:bg-opacity-90 transition">
+            <input
+              type="file"
+              accept="image/*"
+              class="hidden"
+              (change)="onFileChange($event, 'cover')"
+            />
+            <span class="text-white text-sm">Change Cover</span>
+          </label>
+        </div>
+      </div>
+  
+      <!-- Profile Picture and Basic Info -->
+      <div class="flex items-start space-x-6">
+        <div class="relative">
+          <div class="w-32 h-32 rounded-full overflow-hidden bg-gray-800">
+            <img
+              *ngIf="currentUser?.profilePictureData"
+              [src]="'data:' + currentUser?.profilePictureType + ';base64,' + currentUser?.profilePictureData"
+              class="w-full h-full object-cover"
+              alt="Profile Picture"
+            />
+            <div *ngIf="!currentUser?.profilePictureData" 
+                 class="w-full h-full flex items-center justify-center text-gray-500">
+              No photo
+            </div>
+          </div>
+          <label class="absolute bottom-0 right-0 p-1 bg-gray-900 rounded-full cursor-pointer hover:bg-gray-800 transition">
+            <input
+              type="file"
+              accept="image/*"
+              class="hidden"
+              (change)="onFileChange($event, 'profile')"
+            />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </label>
+        </div>
+  
+        <!-- User Info Form -->
+        <div class="flex-1 space-y-6">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-gray-300 text-sm font-medium mb-2">Username</label>
+              <input
+                type="text"
+                [(ngModel)]="formData.username"
+                disabled
+                class=" w-full bg-gray-700 text-gray-400 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-violet-500"
+              />
+            </div>
+  
+            <div>
+              <label class="block text-gray-300 text-sm font-medium mb-2">Email</label>
+              <input
+                type="email"
+                [(ngModel)]="formData.email"
+                class="w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-violet-500"
+              />
+            </div>
+  
+            <div>
+              <label class="block text-gray-300 text-sm font-medium mb-2">Bio</label>
+              <textarea
+                [(ngModel)]="formData.bio"
+                rows="3"
+                class="w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-violet-500"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Password Section -->
+      <div class="p-6 bg-gray-800 rounded-lg">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-medium text-white">Password</h3>
+            <p class="text-gray-400 text-sm">Secure your account with a strong password</p>
+          </div>
+          <button
+            (click)="navigateToChangePassword()"
+            class="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+          >
+            Change Password
+          </button>
+        </div>
+      </div>
+  
+      <!-- Save Changes Button -->
+      <div class="flex justify-end space-x-4">
+        <button
+          (click)="saveChanges()"
+          [disabled]="isLoading"
+          class="px-6 py-3 bg-gradient-to-r from-[#2ED9C6] to-[#B85CB2] rounded-lg text-white font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 disabled:opacity-50"
+        >
+          <span *ngIf="!isLoading">Save Changes</span>
+          <span *ngIf="isLoading">Saving...</span>
+        </button>
+      </div>
+  
+      <!-- Danger Zone -->
+      <div class="mt-12 border-t border-gray-700 pt-8">
+        <h3 class="text-red-500 text-lg font-medium mb-4">Danger Zone</h3>
+        <div class="p-6 bg-gray-800 rounded-lg border border-red-500">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="text-white font-medium">Delete Account</h4>
+              <p class="text-gray-400 text-sm">Permanently delete your account and all associated data</p>
+            </div>
+            <button
+              (click)="initiateAccountDeletion()"
+              class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
+              Delete Account
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
