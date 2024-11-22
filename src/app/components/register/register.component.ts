@@ -130,6 +130,7 @@ export class RegisterComponent implements OnInit {
     if (!this.validateForm()) return;
     
     this.isLoading = true;
+    this.formErrors = {}; // Clear any previous errors
     const formData = new FormData();
     formData.append('registrationDTO', new Blob([JSON.stringify(this.registerObj)], {
       type: 'application/json'
@@ -145,13 +146,11 @@ export class RegisterComponent implements OnInit {
     this.authService.register(formData).subscribe({
       next: (response) => {
         this.router.navigate(['/login']);
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Registration failed:', error);
-        this.formErrors['general'] = 'Registration failed. Please try again.';
-        this.isLoading = false;
-      },
-      complete: () => {
+        this.formErrors['general'] = error?.error?.message || 'Registration failed. Please try again.';
         this.isLoading = false;
       }
     });

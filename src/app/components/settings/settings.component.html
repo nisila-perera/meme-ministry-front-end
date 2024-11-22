@@ -128,21 +128,15 @@
   
       <!-- Danger Zone -->
       <div class="mt-12 border-t border-gray-700 pt-8">
-        <h3 class="text-red-500 text-lg font-medium mb-4">Danger Zone</h3>
-        <div class="p-6 bg-gray-800 rounded-lg border border-red-500">
-          <div class="flex items-center justify-between">
-            <div>
-              <h4 class="text-white font-medium">Delete Account</h4>
-              <p class="text-gray-400 text-sm">Permanently delete your account and all associated data</p>
-            </div>
-            <button
-              (click)="initiateAccountDeletion()"
-              class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-            >
-              Delete Account
-            </button>
-          </div>
-        </div>
+        <h2 class="text-xl font-bold text-red-500 mb-4">Danger Zone</h2>
+        <p class="text-gray-400 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+        <button
+          (click)="initiateAccountDeletion()"
+          [disabled]="isLoading"
+          class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
+        >
+          Delete Account
+        </button>
       </div>
     </div>
   </div>

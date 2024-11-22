@@ -118,10 +118,25 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-
   initiateAccountDeletion(): void {
     if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      // Implement account deletion logic
+      this.deleteAccount();
+    }
+  }
+
+  deleteAccount(): void {
+    if (this.currentUser?.id) {
+      this.isLoading = true;
+      this.userService.deleteAccount(this.currentUser.id).subscribe({
+        next: () => {
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error('Error deleting account:', error);
+          alert('Failed to delete account. Please try again.');
+          this.isLoading = false;
+        }
+      });
     }
   }
 }

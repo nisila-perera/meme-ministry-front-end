@@ -9,11 +9,12 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit{
   currentMeme: string = '';
   isLoading: boolean = false;
+  errorMessage: string = '';
   constructor(
     private authService: AuthService,
     private router: Router
@@ -35,9 +36,9 @@ export class LoginComponent implements OnInit{
     "password": ""
   };
 
-  // Add login method
   onLogin(): void {
     this.isLoading = true;
+    this.errorMessage = ''; // Clear any previous error messages
     this.authService.login(this.loginObj.username, this.loginObj.password)
       .subscribe({
         next: (response) => {
@@ -46,6 +47,7 @@ export class LoginComponent implements OnInit{
         },
         error: (error) => {
           console.error('Login failed:', error);
+          this.errorMessage = 'Login failed. Please check your credentials and try again.';
           this.isLoading = false;
         }
       });

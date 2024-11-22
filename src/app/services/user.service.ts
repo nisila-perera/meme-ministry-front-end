@@ -61,11 +61,23 @@ export class UserService {
     );
   }
 
-
-
   updatePassword(id: number, currentPassword: string, newPassword: string) { }
 
-  deleteAccount(id: number) { }
+  deleteAccount(userId: number): Observable<void> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.delete<void>(`${this.API_URL}/delete/${userId}`, { headers }).pipe(
+      tap(() => {
+        // Clear local storage after successful deletion
+        localStorage.clear();
+      }),
+      catchError(error => {
+        console.error('Delete account error:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 
   followUser(userId: number): Observable<any> {
     const token = this.authService.getToken();
