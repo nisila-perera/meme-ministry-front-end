@@ -56,22 +56,19 @@ export class SingleMemerComponent implements OnInit {
     imageType: string | undefined,
     defaultImage: string
   ): SafeUrl | string {
-    // If image data exists, create a safe URL
     if (imageData) {
       return this.sanitizer.bypassSecurityTrustUrl(
         `data:${imageType || 'image/jpeg'};base64,${imageData}`
       );
     }
-
-    // Return default image if no image data
     return defaultImage;
   }
+
   checkFollowStatus(): void {
     if (!this.currentUser) return;
 
     this.userService.getFollowers(this.currentUser.id).subscribe({
       next: (followers) => {
-        // Check if current logged-in user is in followers list
         const currentLoggedInUserId = this.authService.getCurrentUser()?.id;
         this.isFollowing = followers.some(follower => follower.id === currentLoggedInUserId);
       },
@@ -79,7 +76,6 @@ export class SingleMemerComponent implements OnInit {
     });
   }
 
-  // Method to handle follow/unfollow action
   onFollowToggle(): void {
     if (!this.currentUser) return;
 
@@ -104,8 +100,6 @@ export class SingleMemerComponent implements OnInit {
     }
   }
 
-
-  // Method to view user profile
   viewProfile(): void {
     if (!this.currentUser) return;
     console.log(`Navigating to profile of: ${this.currentUser.username}`);
@@ -113,7 +107,7 @@ export class SingleMemerComponent implements OnInit {
 
   get displayName(): string {
     return this.currentUser?.username ||
-      'Anonymous User';
+      'No Name Found';
   }
 
   get userBio(): string {

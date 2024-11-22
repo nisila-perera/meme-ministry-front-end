@@ -2,20 +2,20 @@ import { User } from "./user"
 
 export interface Post {
     id : number
-    imageData? : String
-    imageType? : String
-    caption? : String
-    createdAt : String
+    imageData : string
+    imageType : string
+    caption? : string
+    createdAt : string
     user : User
     commentCount : number
     reactionCount : number
 }
 
 export interface PostResponse {
-    imageData? : String
-    imageType? : String
-    caption? : String
-    createdAt : String
+    imageData? : string
+    imageType? : string
+    caption? : string
+    createdAt : string
     commentCount : number
     reactionCount : number
 }
