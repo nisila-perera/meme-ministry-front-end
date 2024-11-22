@@ -16,7 +16,7 @@ export const customInterceptor: HttpInterceptorFn = (req, next) => {
       'Authorization': `Bearer ${token}`
     }
   });
-  
+
   return next(clonedRequest).pipe(
     catchError(error => {
       if (error.status === 401) {

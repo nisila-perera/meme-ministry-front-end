@@ -14,40 +14,30 @@ export class AuthService {
   private isInitializing = false;
 
   constructor(private http: HttpClient, private router: Router) {
-    console.log('AuthService constructor called');
     this.initializeAuth();
   }
 
   private async initializeAuth() {
     if (this.isInitializing) {
-      console.log('Auth initialization already in progress');
       return;
     }
 
     this.isInitializing = true;
-    console.log('Starting auth initialization');
 
     try {
       const savedUser = this.getCurrentUser();
       const sessionToken = this.getCookie('session_token');
-      console.log('Saved user:', savedUser);
-      console.log('Session token exists:', !!sessionToken);
 
       if (savedUser && sessionToken) {
-        console.log('Found existing session, setting current user');
         this.currentUserSubject.next(savedUser);
 
-        // Only verify session if we're not on the login page
         if (!window.location.pathname.includes('/login')) {
-          console.log('Verifying session token');
           await this.verifySession(sessionToken).toPromise();
         }
       } else {
-        console.log('No valid session found');
         this.clearAuthData();
       }
     } catch (error) {
-      console.error('Error during auth initialization:', error);
       this.clearAuthData();
     } finally {
       this.isInitializing = false;
@@ -55,7 +45,6 @@ export class AuthService {
   }
 
   private clearAuthData(): void {
-    console.log('Clearing auth data');
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
     document.cookie = 'session_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -98,7 +87,6 @@ export class AuthService {
       this.setCookie('session_token', response.token);
       this.currentUserSubject.next(response.user);
       
-      // Check if we're not already on the home page before navigating
       if (window.location.pathname !== '/') {
         console.log('Navigating to home page');
         this.router.navigate(['/']);
@@ -107,23 +95,19 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<AuthResponse> {
-    console.log('Attempting login for user:', username);
     return this.http
       .post<AuthResponse>(`${this.API_URL}/auth/login`, { username, password })
       .pipe(
         tap((response) => {
-          console.log('Login response received:', response);
           this.handleAuthSuccess(response);
         }),
         catchError(error => {
-          console.error('Login error:', error);
           throw error;
         })
       );
   }
 
   logout(): void {
-      console.log('Logging out');
       this.clearAuthData();
       
       if (!window.location.pathname.includes('/login')) {
@@ -138,7 +122,6 @@ export class AuthService {
     ).pipe(
       tap((response) => this.handleAuthSuccess(response)),
       catchError(error => {
-        console.error('Registration failed:', error);
         throw error;
       })
     );
@@ -173,7 +156,6 @@ export class AuthService {
       }
       return null;
     } catch (error) {
-      console.error('Error parsing user data from localStorage:', error);
       return null;
     }
   }
